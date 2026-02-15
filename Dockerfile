@@ -10,7 +10,6 @@ LABEL description="Build123d development image with OCP dependencies and visuali
 # - libgl1-mesa-glx & libglib2.0-0: Required for the OCP CAD kernel
 # - git: Required for VS Code Dev Container features
 RUN apt-get update && \
-	apt-get upgrade -y && \
     apt-get -y install --no-install-recommends \
 		libgl1 \
 		libglib2.0-0 \
