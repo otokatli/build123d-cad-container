@@ -6,6 +6,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 LABEL maintainer="ozan.tokatli@gmail.com"
 LABEL description="Build123d development image with OCP dependencies and visualization"
 
+# Arguments for Non-Root User
+ARG USERNAME=developer
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
 # Install system dependencies
 # - libgl1-mesa-glx & libglib2.0-0: Required for the OCP CAD kernel
 # - git: Required for VS Code Dev Container features
@@ -15,6 +20,7 @@ RUN apt-get update && \
 		libglib2.0-0 \
 		libxrender1 \
 		git \
+		sudo \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure Python Environment
@@ -31,5 +37,13 @@ ENV OCP_VSCODE_HOST=0.0.0.0
 RUN python3 -m pip install --no-cache-dir \
     build123d \
     ocp-vscode
+
+# 4. Create Non-Root User
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+USER $USERNAME
 
 EXPOSE 3939
