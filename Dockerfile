@@ -36,7 +36,9 @@ ENV OCP_VSCODE_HOST=0.0.0.0
 # 3. Install Python Packages
 RUN python3 -m pip install --no-cache-dir \
     build123d \
-    ocp-vscode
+    ocp-vscode \
+	ipykernel \
+	jupyter_client
 
 # 4. Create Non-Root User
 RUN groupadd --gid $USER_GID $USERNAME \
