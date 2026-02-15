@@ -14,7 +14,7 @@ RUN apt-get update && \
 		libgl1 \
 		libglib2.0-0 \
 		libxrender1 \
-		# git \
+		git \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure Python Environment
